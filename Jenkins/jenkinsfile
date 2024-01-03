@@ -42,7 +42,9 @@ pipeline {
         }
 
         stage('Imprimir variable de entorno'){
-            echo "Hello ${params.NAME}"
+            steps{
+                echo "Hello ${params.NAME}"
+            }
         }
     }
 
