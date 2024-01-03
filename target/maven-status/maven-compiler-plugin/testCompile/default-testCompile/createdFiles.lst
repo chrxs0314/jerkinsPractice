@@ -1,3 +1,11 @@
+pomProjectTAEAcademy\Pages\CheckoutPage.class
+pomProjectTAEAcademy\Pages\LoginPage.class
+pomProjectTAEAcademy\Test\RemovingElementTest.class
+pomProjectTAEAcademy\Pages\CartPage.class
 pomProjectTAEAcademy\Pages\BasePage.class
-pomProjectTAEAcademy\Test\AppTest.class
+pomProjectTAEAcademy\Test\PurchaseProductTest.class
+pomProjectTAEAcademy\Providers\DataProviderLogin.class
 pomProjectTAEAcademy\Test\BaseTest.class
+pomProjectTAEAcademy\Pages\ProductsPage.class
+pomProjectTAEAcademy\Providers\DataProviderCheckOut.class
+pomProjectTAEAcademy\Test\LogoutTest.class
