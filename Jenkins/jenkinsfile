@@ -28,6 +28,7 @@ pipeline{
         stage('Recopilar resultados'){
             steps{
                 junit '**/target/surefire-reports/*.xml'
+                archiveArtifacts artifacts: '**/target/surefire-reports/*.xml', fingerprint: true
             }
         }
     }

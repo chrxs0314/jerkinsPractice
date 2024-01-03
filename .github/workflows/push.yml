@@ -1,0 +1,40 @@
+name: Java CI with Maven
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
+      - name: Clean environment
+        run: mvn clean
+
+      - name: Run tests
+        run: mvn test -DsuiteXmlFile=suite.xml
+
+      - name: Archive test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: surefire-reports
+          path: target/surefire-reports/*.xml
+
+      - name: Delete all untracked files and directories
+        if: always()
+        run: git clean -fdx
