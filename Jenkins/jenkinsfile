@@ -7,23 +7,43 @@ pipeline{
     }
 
     stages{
-        stage("Test"){
+        stage('Checkout'){
             steps{
-                // Get some code from a Github repository
-                git branch: 'main', url:'https://github.com/chrxs0314/jerkinsPractice.git'
-                bat "mvn clean verify"
+                checkout scm
             }
-            post{
-                always{
-                    allure([
-                        includeProperties: false,
-                        jdk:'',
-                        properties:[],
-                        reportBuildPolicy:'ALWAYS',
-                        results:[[path: '*/allure-results']]
-                    ])
-                }
+        }
+
+        stage('Perapar entorno'){
+            steps{
+            bat 'mvn clean'
             }
+        }
+
+        steps('Ejecutar pruebas'){
+            steps{
+            bat 'mvn test -DsuiteXmlFile=suite.xml'
+            }
+        }
+
+        steps('Recopilar resultados'){
+            steps{
+            junit '**/target/surefire-reports/*.xml'
+            }
+        }
+    }
+
+    post{
+        always{
+            cleanWS()
+        }
+        success{
+        echo 'Las pruebas se ejecutaron con éxito.'
+        }
+        failure{
+        echo 'La ejecución de las pruebas falló. Revisar los resultados.'
+        }
+        unstable {
+        echo 'La ejecución de las pruebas es inestable. Algunas pruebas fallaron.'
         }
     }
 }
