@@ -12,7 +12,7 @@ public class BaseTest {
 
     WebDriver driver;
 
-    @BeforeMethod
+    @BeforeClass
     public void setUpBeforeClass(){
         this.driver = new ChromeDriver();
         getLoginPage().login();
@@ -25,7 +25,7 @@ public class BaseTest {
     public CartPage getCartPage(){return new CartPage(this.driver,"https://www.saucedemo.com/cart.html");}
     public CheckoutPage getCheckOut(){return new CheckoutPage(this.driver, "https://www.saucedemo.com/checkout-step-one.html");}
 
-    @AfterMethod
+    @AfterClass
     public void tearDown(){
         driver.quit();
     }
