@@ -27,13 +27,14 @@ pipeline {
         stage('Generar reporte de Allure') {
             steps {
                 bat 'mvn allure:report'
+                archiveArtifacts artifacts: 'target/site/allure-maven-plugin/**', fingerprint: true
             }
         }
 
         stage('Recopilar resultados') {
             steps {
                 junit '**/target/surefire-reports/*.xml'
-                archiveArtifacts artifacts: 'target/allure-results/**', fingerprint: true
+//                 archiveArtifacts artifacts: 'target/allure-results/**', fingerprint: true
             }
         }
     }
