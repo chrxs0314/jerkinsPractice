@@ -40,9 +40,6 @@ pipeline {
     }
 
     post {
-        always {
-            deleteDir()
-        }
         success {
             echo 'Las pruebas se ejecutaron con éxito.'
             archiveArtifacts artifacts: 'target/site/allure-maven-plugin/**', fingerprint: true
@@ -52,6 +49,9 @@ pipeline {
         }
         unstable {
             echo 'La ejecución de las pruebas es inestable. Algunas pruebas fallaron.'
+        }
+        always {
+            deleteDir()
         }
     }
 }
