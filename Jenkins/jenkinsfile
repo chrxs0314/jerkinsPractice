@@ -1,46 +1,52 @@
-pipeline{
+pipeline {
     agent any
 
-    tools{
-        // install the Maven version configured as "M3" and add it at the path
+    tools {
         maven "M3"
     }
 
-    stages{
-        stage('Checkout'){
-            steps{
+    stages {
+        stage('Checkout') {
+            steps {
                 checkout scm
             }
         }
 
-        stage('Perapar entorno'){
-            steps{
+        stage('Preparar entorno') {
+            steps {
                 bat 'mvn clean'
             }
         }
 
-        stage('Ejecutar pruebas'){
-            steps{
+        stage('Ejecutar pruebas') {
+            steps {
                 bat 'mvn test -DsuiteXmlFile=suite.xml'
             }
         }
 
-        stage('Recopilar resultados'){
-            steps{
+        stage('Generar reporte de Allure') {
+            steps {
+                bat 'mvn allure:report'
+            }
+        }
+
+        stage('Recopilar resultados') {
+            steps {
                 junit '**/target/surefire-reports/*.xml'
-                archiveArtifacts artifacts: '**/target/surefire-reports/*.xml', fingerprint: true
+                archiveArtifacts artifacts: 'target/allure-results/**', fingerprint: true
             }
         }
     }
 
-    post{
-        always{
+    post {
+        always {
             deleteDir()
         }
-        success{
+        success {
             echo 'Las pruebas se ejecutaron con éxito.'
+            archiveArtifacts artifacts: 'target/site/allure-maven-plugin/**', fingerprint: true
         }
-        failure{
+        failure {
             echo 'La ejecución de las pruebas falló. Revisar los resultados.'
         }
         unstable {
