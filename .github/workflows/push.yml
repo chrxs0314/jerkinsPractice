@@ -18,7 +18,6 @@ jobs:
 
       - name: Set up ChromeDriver
         uses: nanasess/setup-chromedriver@v2
-        # No need to specify chromedriver-version to match Chrome's version
 
       - name: Start Xvfb
         run: |
@@ -38,8 +37,9 @@ jobs:
       - name: Run tests with Maven
         run: mvn -B test -DsuiteXmlFile=testng.xml
 
-      - name: Archive TestNG reports
+      - name: Archive TestNG HTML reports
+        if: success()
         uses: actions/upload-artifact@v3
         with:
-          name: testng-reports
-          path: target/surefire-reports/*.xml
+          name: testng-html-reports
+          path: target/surefire-reports/emailable-report.html
