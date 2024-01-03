@@ -44,9 +44,9 @@ pipeline {
         }
 
         stage('Comparar variables de entorno'){
-            steps{
-                scripts{
-                    bat 'java -cp target/classes pomProjectTAEAcademy.Test.EnvironmentVariableTest compareEnvironmentVariables'
+            steps {
+                script {
+                    bat 'java -cp "target/classes;target/test-classes" pomProjectTAEAcademy.App'
                 }
             }
         }
