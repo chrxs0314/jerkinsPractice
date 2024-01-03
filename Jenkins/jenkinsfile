@@ -19,13 +19,13 @@ pipeline{
             }
         }
 
-        steps('Ejecutar pruebas'){
+        stage('Ejecutar pruebas'){
             steps{
             bat 'mvn test -DsuiteXmlFile=suite.xml'
             }
         }
 
-        steps('Recopilar resultados'){
+        stage('Recopilar resultados'){
             steps{
             junit '**/target/surefire-reports/*.xml'
             }
