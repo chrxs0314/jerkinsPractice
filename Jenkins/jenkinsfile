@@ -1,9 +1,8 @@
 pipeline {
     agent any
 
-    environment{
-        JENKINS_USER_NAME = 'UserTest'
-        JENKINS_USER_PASSWORD = 'mi_contraseña'
+    parameters {
+        text(name:'NAME', defaultValue:'testName', description:'username')
     }
 
     tools {
@@ -40,6 +39,10 @@ pipeline {
             steps {
                 junit '**/target/surefire-reports/*.xml'
             }
+        }
+
+        stage('Imprimir variable de entorno'){
+            echo "Hello ${params.NAME}"
         }
     }
 
