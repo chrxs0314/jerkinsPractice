@@ -15,35 +15,35 @@ pipeline{
 
         stage('Perapar entorno'){
             steps{
-            bat 'mvn clean'
+                bat 'mvn clean'
             }
         }
 
         stage('Ejecutar pruebas'){
             steps{
-            bat 'mvn test -DsuiteXmlFile=suite.xml'
+                bat 'mvn test -DsuiteXmlFile=suite.xml'
             }
         }
 
         stage('Recopilar resultados'){
             steps{
-            junit '**/target/surefire-reports/*.xml'
+                junit '**/target/surefire-reports/*.xml'
             }
         }
     }
 
     post{
         always{
-            cleanWS()
+            deleteDir()
         }
         success{
-        echo 'Las pruebas se ejecutaron con éxito.'
+            echo 'Las pruebas se ejecutaron con éxito.'
         }
         failure{
-        echo 'La ejecución de las pruebas falló. Revisar los resultados.'
+            echo 'La ejecución de las pruebas falló. Revisar los resultados.'
         }
         unstable {
-        echo 'La ejecución de las pruebas es inestable. Algunas pruebas fallaron.'
+            echo 'La ejecución de las pruebas es inestable. Algunas pruebas fallaron.'
         }
     }
 }
