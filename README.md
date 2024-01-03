@@ -1,2 +1,2 @@
-# POM Project TAE Academy
-# jerkinsPractice
+# POM Project - Jerkins Practice
+
