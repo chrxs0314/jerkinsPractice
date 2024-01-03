@@ -23,9 +23,23 @@ pipeline {
             }
         }
 
+        stage('Compilar proyecto') {
+            steps {
+                // Compila el proyecto, asegurándote de que la clase EnvironmentVariable también se compile
+                bat 'mvn compile'
+            }
+        }
+
         stage('Ejecutar pruebas') {
             steps {
                 bat 'mvn test -DsuiteXmlFile=suite.xml'
+            }
+        }
+
+        stage('Generar reporte de Allure') {
+            steps {
+                bat 'mvn allure:report'
+                archiveArtifacts artifacts: 'target/site/allure-maven-plugin/**', fingerprint: true
             }
         }
 
@@ -37,17 +51,9 @@ pipeline {
             }
         }
 
-        stage('Generar reporte de Allure') {
-            steps {
-                bat 'mvn allure:report'
-                archiveArtifacts artifacts: 'target/site/allure-maven-plugin/**', fingerprint: true
-            }
-        }
-
         stage('Recopilar resultados') {
             steps {
                 junit '**/target/surefire-reports/*.xml'
-//                 archiveArtifacts artifacts: 'target/allure-results/**', fingerprint: true
             }
         }
     }
