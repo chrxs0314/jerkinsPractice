@@ -23,13 +23,6 @@ pipeline {
             }
         }
 
-        stage('Compilar proyecto') {
-            steps {
-                // Compila el proyecto, asegurándote de que la clase EnvironmentVariable también se compile
-                bat 'mvn compile'
-            }
-        }
-
         stage('Ejecutar pruebas') {
             steps {
                 bat 'mvn test -DsuiteXmlFile=suite.xml'
@@ -40,14 +33,6 @@ pipeline {
             steps {
                 bat 'mvn allure:report'
                 archiveArtifacts artifacts: 'target/site/allure-maven-plugin/**', fingerprint: true
-            }
-        }
-
-        stage('Comparar variables de entorno'){
-            steps {
-                script {
-                    bat 'java -cp "target/classes;target/test-classes" pomProjectTAEAcademy.App'
-                }
             }
         }
 
