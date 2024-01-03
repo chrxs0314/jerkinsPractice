@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment{
+        JENKINS_USER_NAME = 'UserTest'
+        JENKINS_USER_PASSWORD = 'mi_contraseña'
+    }
+
     tools {
         maven "M3"
     }
@@ -21,6 +26,14 @@ pipeline {
         stage('Ejecutar pruebas') {
             steps {
                 bat 'mvn test -DsuiteXmlFile=suite.xml'
+            }
+        }
+
+        stage('Comparar variables de entorno'){
+            steps{
+                scripts{
+                    bat 'java -cp target/classes pomProjectTAEAcademy.Test.EnvironmentVariableTest compareEnvironmentVariables'
+                }
             }
         }
 
