@@ -42,7 +42,6 @@ pipeline {
     post {
         success {
             echo 'Las pruebas se ejecutaron con éxito.'
-            archiveArtifacts artifacts: 'target/site/allure-maven-plugin/**', fingerprint: true
         }
         failure {
             echo 'La ejecución de las pruebas falló. Revisar los resultados.'
@@ -50,8 +49,14 @@ pipeline {
         unstable {
             echo 'La ejecución de las pruebas es inestable. Algunas pruebas fallaron.'
         }
-        always {
-            deleteDir()
+        always{
+            allure([
+            includeProperties: false,
+            jdk:'',
+            properties:[],
+            reportBuildPolicy:'ALWAYS',
+            results:[['*/allure-results']]
+            ])
         }
     }
 }
