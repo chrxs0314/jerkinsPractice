@@ -13,7 +13,7 @@ pipeline{
                 git branch: 'main', url:'https://github.com/chrxs0314/jerkinsPractice.git'
                 bat "mvn clean verify"
             }
-            past{
+            post{
                 always{
                     allure([
                         includeProperties: false,
