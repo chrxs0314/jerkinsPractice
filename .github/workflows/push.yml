@@ -16,6 +16,21 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
 
+      - name: Install Google Chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+
+      - name: Set up ChromeDriver
+        run: |
+          CHROME_VERSION=$(google-chrome --version | cut -f 3 -d ' ' | cut -d '.' -f 1)
+          CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION")
+          wget -q "https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip"
+          unzip -q chromedriver_linux64.zip -d .
+          sudo mv chromedriver /usr/bin/chromedriver
+          sudo chmod +x /usr/bin/chromedriver
+          chromedriver --version
+
       - name: Cache Maven packages
         uses: actions/cache@v3
         with:
@@ -34,10 +49,3 @@ jobs:
         with:
           name: testng-reports
           path: target/surefire-reports/*.xml
-
-      - name: Archive TestNG HTML reports (if generated)
-        uses: actions/upload-artifact@v3
-        if: success() || failure()
-        with:
-          name: testng-html-reports
-          path: target/surefire-reports/emailable-report.html

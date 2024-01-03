@@ -2,6 +2,7 @@ package pomProjectTAEAcademy.Test;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.*;
 import pomProjectTAEAcademy.Pages.CartPage;
 import pomProjectTAEAcademy.Pages.CheckoutPage;
@@ -14,7 +15,12 @@ public class BaseTest {
 
     @BeforeClass
     public void setUpBeforeClass(){
-        this.driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
+        options.addArguments("--disable-gpu");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        this.driver = new ChromeDriver(options);
         getLoginPage().login();
     }
 
