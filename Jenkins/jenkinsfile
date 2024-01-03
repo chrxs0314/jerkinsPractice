@@ -1,0 +1,29 @@
+pipeline{
+    agent any
+    
+    tools{
+        // install the Maven version configured as "M3" and add it at the path
+        maven "M3"
+    }
+
+    stages{
+        stage("Test"){
+            steps{
+                // Get some code from a Github repository
+                git branch 'main', url:'https://github.com/chrxs0314/jerkinsPractice.git'
+                bat "mvn clean verify"
+            }
+            past{
+                always{
+                    allure([
+                        includeProperties: false,
+                        jdk:'',
+                        properties:[],
+                        reportBuildPolicy:'ALWAYS'
+                        results:[[path:'*/allure-results']]
+                    ])
+                }
+            }
+        }
+    }
+}
